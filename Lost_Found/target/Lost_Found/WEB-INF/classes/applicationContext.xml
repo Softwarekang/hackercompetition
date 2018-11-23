@@ -14,7 +14,6 @@
 			expression="org.springframework.stereotype.Controller" />
         <!--不扫控制器-->
 	</context:component-scan>
-
 	<context:property-placeholder location="classpath:dbconfig.properties" />
 	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>

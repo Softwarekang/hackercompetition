@@ -8,6 +8,11 @@
     <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
     <result column="user_time" jdbcType="DATE" property="userTime" />
   </resultMap>
+
+
+  <select id="insertImageInfo" parameterType="com.epi.bean.Image1">
+    insert into image1 (imageTime, image) values (#{imageTime},#{image})
+  </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -70,11 +75,9 @@
     user_id, user_name, user_password, user_email, user_time
   </sql>
 
-  <select id="selectByKey" parameterType="java.lang.Integer" resultType="com.epi.bean.User">
-    select * from USER where user_id=#{v}
-  </select>
+
   <select id="selectByUserName" parameterType="java.lang.String" resultType="com.epi.bean.User">
-    select * from USER where user_name=#{username}
+    select * from user where user_name = #{username}
   </select>
 
 
