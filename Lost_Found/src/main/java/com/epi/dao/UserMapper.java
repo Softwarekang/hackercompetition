@@ -1,5 +1,6 @@
 package com.epi.dao;
 
+import com.epi.bean.Goods;
 import com.epi.bean.Image1;
 import com.epi.bean.User;
 import com.epi.bean.UserExample;
@@ -41,4 +42,7 @@ public interface UserMapper {
     int insert(User record);
 
     // 实现上传发布
+    void insertProject(Goods good);
+    // 照片的回显 先按照name查询
+    Goods getImageInfo(String username);
 }

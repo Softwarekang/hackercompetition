@@ -13,6 +13,14 @@
   <select id="insertImageInfo" parameterType="com.epi.bean.Image1">
     insert into image1 (imageTime, image) values (#{imageTime},#{image})
   </select>
+
+  <select id="insertProject" parameterType="com.epi.bean.Goods">
+    insert into project values (#{id},#{goods},#{describe},#{image})
+  </select>
+
+  <select id="getImageInfo" parameterType="java.lang.String">
+    select * from project where goods = #{userName}
+  </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">

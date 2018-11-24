@@ -1,5 +1,6 @@
 package com.epi.controller;
 
+import com.epi.bean.Goods;
 import com.epi.bean.Image1;
 import com.epi.bean.User;
 import com.epi.dao.UserMapper;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
@@ -26,6 +28,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsFileUploadSupport;
 
@@ -51,7 +55,7 @@ public class UserController {
         User user = userMapper.selectByUserName(userName);
         System.out.println(userName);
         if(user != null && (user.getUserPassword().equals(password))){
-           // mv.addAttribute("loginIfo",userName);
+           mv.addAttribute("loginIfo",userName);
             return "success";
         }
         return "login";
@@ -99,13 +103,15 @@ public class UserController {
     public String upFile(){
         return "upFile";
     }
-    @RequestMapping("/upImages")
-    public String upImage(MultipartFile  image) throws Exception{
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        String fileName = image.getOriginalFilename();
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public String upImage(HttpServletRequest request,@RequestParam("description") String description,
+        @RequestParam("goods") String goods,@RequestParam("file") MultipartFile file) throws Exception{
+        System.out.println(description+goods);
+        // 获得上传文件名
+        String fileName = file.getOriginalFilename();
         System.out.println(fileName);
-        // 获得上传文件的io流
-        InputStream inputStream = image.getInputStream();
+        // 动态代理接口
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         // 规定时间格式
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // 获得现在的时间（字符串)
@@ -113,18 +119,34 @@ public class UserController {
         // 获得现在时间的格式(date）
         Date date = df.parse(time);
         System.out.println(time);
+        // 文件的后缀名
+        String ext = FilenameUtils.getExtension(fileName);
+        // 获得上传文件的输入流
+        InputStream inputStream = file.getInputStream();
+        // 信息中介数组
         byte[] image1 = new byte[inputStream.available()];
         // 将文件内容写入image数组中
         inputStream.read(image1);
         // 关闭输入流
         inputStream.close();
+        // 将时间设置为图片名称(秒)
         String imageName = time.replaceAll(" ","").replaceAll(":","");
-        String inPath = "C:\\inimages\\"+imageName+".png";
-        OutputStream fileOutputStream = new FileOutputStream(new File(inPath));
+        // 图片存入磁盘的路径
+        String realUploadPath=request.getServletContext().getRealPath("/");
+        System.out.println(realUploadPath);
+        String inPath = "\\images\\"+imageName+"."+ext;
+        String inPath1 = "C:\\Users\\安康\\IdeaProjects\\Lost_Found\\src\\main\\webapp"+"\\images\\"+imageName+"."+ext;
+        // 文件路径的输出流
+        OutputStream fileOutputStream = new FileOutputStream(new File(inPath1));
+        // 写入信息
         fileOutputStream.write(image1);
+        // 刷新和关闭
+        fileOutputStream.flush();
         fileOutputStream.close();
-        Image1 image2 = new Image1(date,inPath);
-        userMapper.insertImageInfo(image2);
+        // 存入数据库
+        // 主键没有设置因此就先自己每次设置一下
+        Goods good = new Goods(3,goods,description,inPath);
+        userMapper.insertProject(good);
         return null;
     }
 
@@ -134,8 +156,8 @@ public class UserController {
         return "getImages";
     }
     @RequestMapping("/getInformation")
-    public String downImage(HttpServletRequest request) throws Exception{
-        String inPath ="C:\\inimages\\2018-11-23151154.png";
+    public String downImage(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        String inPath ="http://localhost:9995/images/2018-11-22213555.png";
         System.out.println(inPath);
         request.setAttribute("imageUrl",inPath);
         return "getImages";

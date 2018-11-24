@@ -5,12 +5,18 @@
   Time: 15:29
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ page isELIgnored="false" %>
+<%
+    String path = request.getAttribute("imageUrl").toString();
+
+%>
 <html>
 <head>
     <title>照片回显</title>
 </head>
 <body>
-<img src="http:\localhost:9995\2018-11-22213555.png" width="200" height="200">
+<img src="<%=path%>" width="200" height="200">
 </body>
 </html>

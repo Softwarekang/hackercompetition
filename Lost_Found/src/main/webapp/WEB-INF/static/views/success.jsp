@@ -6,12 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>登录成功界面</title>
 </head>
 <body>
     <h1>登录成功界面</h1>
-    <h2>6666</h2>
+    <h2>${loginIfo}6666</h2>
 </body>
 </html>

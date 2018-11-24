@@ -1,20 +1,31 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 安康
-  Date: 2018/11/22
-  Time: 21:50
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>信息上传</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>文件上传</title>
 </head>
 <body>
-<form action="upImages" method="post" enctype="multipart/form-data">
-    选择图片:<input type="file" name="image"/> <br>
-    <input type="submit" value="上传">
+<h2>文件上传</h2>
+<form action="upload" enctype="multipart/form-data" method="post">
+    <table>
+        <tr>
+            <td>物品类型:</td>
+            <td><input type="text" name="goods"></td>
+        </tr>
+        <tr>
+            <td>描述：</td>
+            <td><input type="text" name="description"> </td>
+        </tr>
+        <tr>
+            <td>请选择文件:</td>
+            <td><input type="file" name="file"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="上传"></td>
+        </tr>
+    </table>
 </form>
-
 </body>
 </html>
