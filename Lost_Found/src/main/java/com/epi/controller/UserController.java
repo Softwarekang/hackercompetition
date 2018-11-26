@@ -57,8 +57,11 @@ public class UserController {
         if(user != null && (user.getUserPassword().equals(password))){
            mv.addAttribute("loginIfo",userName);
             return "success";
+        }else {
+          mv.addAttribute("loginInfo","用户名错误");
+          return "login";
         }
-        return "login";
+
     }
 
     // 用户注册

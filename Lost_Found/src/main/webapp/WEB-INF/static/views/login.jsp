@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>用户登录</title>
@@ -17,7 +18,7 @@
         <p><label class="label_input">密码</label><input type="password" name="password" class="text_field"/></p>
 
         <div id="login_control">
-            <input type="submit" id="btn_login" value="登录 "/>
+            <input type="submit" id="btn_login" value="登录 "/><P id="info">${loginInfo}</P>
             <input type="button" id="zhuce_login" value="注册"/>
             <a id="forget_pwd">忘记密码？</a>
         </div>
