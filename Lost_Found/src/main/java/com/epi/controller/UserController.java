@@ -2,6 +2,7 @@ package com.epi.controller;
 
 import com.epi.bean.Goods;
 import com.epi.bean.Image1;
+import com.epi.bean.Project;
 import com.epi.bean.User;
 import com.epi.dao.UserMapper;
 import com.epi.service.UserService;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +51,7 @@ public class UserController {
 
     // 用户登录
     @RequestMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response, ModelMap mv){
+    public String login(HttpServletRequest request, ModelMap mv){
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
         if(userName.equals("")){
@@ -63,7 +65,7 @@ public class UserController {
             User user = userMapper.selectByUserName(userName);
             System.out.println(userName);
             if(user != null && (user.getUserPassword().equals(password))){
-                mv.addAttribute("loginIfo",userName);
+                mv.addAttribute("loginInfo",userName);
                 return "success";
             }else {
                 mv.addAttribute("loginInfo","用户名或密码错误");
@@ -81,7 +83,7 @@ public class UserController {
     }
 
     @RequestMapping("/register")
-    public String register(HttpServletRequest request, HttpServletResponse response, ModelMap mv) throws Exception{
+    public String register(HttpServletRequest request, ModelMap mv) throws Exception{
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("userPassword");
@@ -144,8 +146,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public String upImage(HttpServletRequest request,@RequestParam("description") String description,
+    public String upImage(HttpServletRequest request,@RequestParam("userName") String userName,@RequestParam("description") String description,
         @RequestParam("goods") String goods,@RequestParam("file") MultipartFile file) throws Exception{
+        System.out.println("上传人:"+userName);
         System.out.println(description+goods);
         // 获得上传文件名
         String fileName = file.getOriginalFilename();
@@ -183,10 +186,11 @@ public class UserController {
         // 刷新和关闭
         fileOutputStream.flush();
         fileOutputStream.close();
+        System.out.println(time);
         // 存入数据库
-        // 主键没有设置因此就先自己每次设置一下 不能重复
-        Goods good = new Goods(1,goods,description,inPath);
-        userMapper.insertProject(good);
+        // 主键没有设置因此就先自己每次设置一下 （解决方法：逆向工程)
+        Project project = new Project(1,userName,goods,inPath,description,time,null);
+        userMapper.insertProject1(project);
         return "upFileSuccess";
     }
 
@@ -202,7 +206,9 @@ public class UserController {
     }
     @RequestMapping("/getInformation")
     public String downImage(HttpServletRequest request) throws Exception{
-        String inPath ="http://localhost:9995/images/2018-11-27153553.png";
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        System.out.println("555");
+        String inPath ="http://localhost:9995"+"/images/2018-11-27184531.png";
         System.out.println(inPath);
         request.setAttribute("imageUrl",inPath);
         return "getImages";

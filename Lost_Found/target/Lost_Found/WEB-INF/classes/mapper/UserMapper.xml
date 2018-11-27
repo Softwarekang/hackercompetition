@@ -9,13 +9,22 @@
     <result column="user_time" jdbcType="DATE" property="userTime" />
   </resultMap>
 
+  <!-- 上传信息-->
+  <select id="insertProject1" parameterType="com.epi.bean.Project">
+    insert into project1 (p_id,p_author,p_sort,p_image,p_content,p_date,p_status) values (#{p_id},#{p_author},#{p_sort},#{p_image},#{p_content},#{p_date},#{p_status})
+  </select>
+  <!--回显信息-->
+  <select id="getProject1" parameterType="java.lang.Integer" resultType="com.epi.bean.Project">
+    select * from project1 where p_id = #{v}
+  </select>
 
+<!--插入图片-->
   <select id="insertImageInfo" parameterType="com.epi.bean.Image1">
     insert into image1 (imageTime, image) values (#{imageTime},#{image})
   </select>
 
   <select id="insertProject" parameterType="com.epi.bean.Goods">
-    insert into project values (#{id},#{goods},#{describe},#{image})
+    insert into project  values (#{id},#{goods},#{describe},#{image})
   </select>
 
   <select id="getImageInfo" parameterType="java.lang.String">

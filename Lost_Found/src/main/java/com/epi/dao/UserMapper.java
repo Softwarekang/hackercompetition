@@ -2,6 +2,7 @@ package com.epi.dao;
 
 import com.epi.bean.Goods;
 import com.epi.bean.Image1;
+import com.epi.bean.Project;
 import com.epi.bean.User;
 import com.epi.bean.UserExample;
 import org.apache.ibatis.annotations.Param;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository("UserDao")
 public interface UserMapper {
+    // 获得image信息
+
     long countByExample(UserExample example);
 
     int deleteByExample(UserExample example);
@@ -45,6 +48,8 @@ public interface UserMapper {
 
     // 实现上传发布
     void insertProject(Goods good);
+    void insertProject1(Project project);
     // 照片的回显 先按照name查询
     Goods getImageInfo(String username);
+    Project getProject1(Integer id);
 }

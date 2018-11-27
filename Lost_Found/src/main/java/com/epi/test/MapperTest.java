@@ -39,21 +39,7 @@ public class MapperTest {
         Date date = df.parse(time);
         //图片的路径
         String imagePath = "C:\\images\\XML.png";
-        // 获得文件输入流
-        FileInputStream fileInputStream = new FileInputStream(new File(imagePath));
-        // 图片二进制流
-        byte[] image = new byte[fileInputStream.available()];
-        // 将文件内容写入image数组中
-        fileInputStream.read(image);
-        // 关闭输入流
-        fileInputStream.close();
-        String imageName = time.replaceAll(" ","").replaceAll(":","");
-        String inPath = "C:\\inimages\\"+imageName+".png";
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(inPath));
-        fileOutputStream.write(image);
-        fileOutputStream.close();
-        Image1 image1 = new Image1(date,inPath);
-        userMapper.insertImageInfo(image1);
+
 
         /*
         // 用户注册
