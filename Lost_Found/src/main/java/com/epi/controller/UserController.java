@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FilenameUtils;
@@ -35,13 +36,13 @@ import org.springframework.web.multipart.commons.CommonsFileUploadSupport;
 
 @Controller
 public class UserController {
-    @Autowired
+    @Resource(name="sqlSession")
     SqlSession sqlSession  ;
     @Autowired
     UserService userService;
 
     // 用户首次登录
-    @RequestMapping("/hello")
+    @RequestMapping("/hacker")
     public String hello(ModelMap mv){
         return "login";
     }
@@ -51,16 +52,25 @@ public class UserController {
     public String login(HttpServletRequest request, HttpServletResponse response, ModelMap mv){
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        User user = userMapper.selectByUserName(userName);
-        System.out.println(userName);
-        if(user != null && (user.getUserPassword().equals(password))){
-           mv.addAttribute("loginIfo",userName);
-            return "success";
-        }else {
-          mv.addAttribute("loginInfo","用户名错误");
-          return "login";
+        if(userName.equals("")){
+            mv.addAttribute("loginInfo","用户名不能为空");
+            return "login";
+        }else if(password.equals("")){
+            mv.addAttribute("loginInfo","密码不能为空");
+            return "login";
+        }else{
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            User user = userMapper.selectByUserName(userName);
+            System.out.println(userName);
+            if(user != null && (user.getUserPassword().equals(password))){
+                mv.addAttribute("loginIfo",userName);
+                return "success";
+            }else {
+                mv.addAttribute("loginInfo","用户名或密码错误");
+                return "login";
+            }
         }
+
 
     }
 
@@ -73,15 +83,41 @@ public class UserController {
     @RequestMapping("/register")
     public String register(HttpServletRequest request, HttpServletResponse response, ModelMap mv) throws Exception{
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        String userName = request.getParameter("username");
-        String passWord = request.getParameter("password");
+        String userName = request.getParameter("userName");
+        String passWord = request.getParameter("userPassword");
+        String confirmPassword = request.getParameter("user_confirm_password");
         String email = request.getParameter("email");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time = df.format(new Date());
-        Date date = df.parse(time);
-        userMapper.insert(new User(null,userName,passWord,email,date));
-        return "login";
+        Boolean register = true;
+        if(userName.equals("")){
+            mv.addAttribute("registerInfo","用户名不能为空");
+            register = false;
+        } else if(passWord.equals("")){
+            mv.addAttribute("registerInfo","密码不能为空");
+            register = false;
+        } else if(confirmPassword.equals("")){
+            mv.addAttribute("registerInfo","请输入确定密码");
+            register = false;
+        } else if(!passWord.equals(confirmPassword)){
+            mv.addAttribute("registerInfo","两次密码输入不同");
+            register = false;
+        }else if (email.equals("")) {
+            mv.addAttribute("registerInfo","邮箱不能为空");
+            register = false;
+        } else{
+
+        }
+        if(register){
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = df.format(new Date());
+            Date date = df.parse(time);
+            userMapper.insert(new User(null,userName,passWord,email,date));
+            return "login";
+        }else{
+            return "register";
+        }
+
     }
+
 
     // 异步判断用户是否已经注册
     @RequestMapping("/ajax")
@@ -101,11 +137,12 @@ public class UserController {
     }
 
 
-    // 上传图片
+    // 长传信息
     @RequestMapping("/upFile")
     public String upFile(){
         return "upFile";
     }
+
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     public String upImage(HttpServletRequest request,@RequestParam("description") String description,
         @RequestParam("goods") String goods,@RequestParam("file") MultipartFile file) throws Exception{
@@ -137,7 +174,7 @@ public class UserController {
         // 图片存入磁盘的路径
         String realUploadPath=request.getServletContext().getRealPath("/");
         System.out.println(realUploadPath);
-        String inPath = "\\images\\"+imageName+"."+ext;
+        String inPath = "/images/"+imageName+"."+ext;
         String inPath1 = "C:\\Users\\安康\\IdeaProjects\\Lost_Found\\src\\main\\webapp"+"\\images\\"+imageName+"."+ext;
         // 文件路径的输出流
         OutputStream fileOutputStream = new FileOutputStream(new File(inPath1));
@@ -147,20 +184,25 @@ public class UserController {
         fileOutputStream.flush();
         fileOutputStream.close();
         // 存入数据库
-        // 主键没有设置因此就先自己每次设置一下
-        Goods good = new Goods(3,goods,description,inPath);
+        // 主键没有设置因此就先自己每次设置一下 不能重复
+        Goods good = new Goods(1,goods,description,inPath);
         userMapper.insertProject(good);
-        return null;
+        return "upFileSuccess";
     }
 
+    // 长传成功进行跳转 回到主页面
+    @RequestMapping("/toSuccess")
+    public String toSuccess(){
+        return "success";
+    }
     // 照片回显
     @RequestMapping("/getImages")
     public String toDownImage(){
         return "getImages";
     }
     @RequestMapping("/getInformation")
-    public String downImage(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        String inPath ="http://localhost:9995/images/2018-11-22213555.png";
+    public String downImage(HttpServletRequest request) throws Exception{
+        String inPath ="http://localhost:9995/images/2018-11-27153553.png";
         System.out.println(inPath);
         request.setAttribute("imageUrl",inPath);
         return "getImages";

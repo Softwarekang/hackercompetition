@@ -7,7 +7,9 @@ import com.epi.bean.UserExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+@Repository("UserDao")
 public interface UserMapper {
     long countByExample(UserExample example);
 

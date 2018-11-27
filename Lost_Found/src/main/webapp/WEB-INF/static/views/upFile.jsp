@@ -8,11 +8,11 @@
 </head>
 <body>
 <h2>文件上传</h2>
-<form action="upload" enctype="multipart/form-data" method="post">
+<form action="/upload" enctype="multipart/form-data" method="post">
     <table>
         <tr>
             <td>物品类型:</td>
-            <td><input type="text" name="oods"></td>
+            <td><input type="text" name="goods"></td>
         </tr>
         <tr>
             <td>描述：</td>
@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td>请选择文件:</td>
-            <td><input type="file" nagme="file"></td>
+            <td><input type="file" name="file"></td>
         </tr>
         <tr>
             <td><input type="submit" value="上传"></td>

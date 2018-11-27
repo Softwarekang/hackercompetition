@@ -2,9 +2,13 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/static/images/bg3.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/static/images/c.jpg" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/static/views/jquery-1.11.3.min.js" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/static/views/jquery-3.3.1.min.js" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/images/2018-11-22213555.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/bg3.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/c.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/c.jpg" charset="GBK" />
     <file url="PROJECT" charset="GBK" />
   </component>
 </project>

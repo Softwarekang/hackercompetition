@@ -29,11 +29,9 @@
 			<!-- 5M -->
 			<value>52428880</value>
 		</property>
-
 		<property name="defaultEncoding">
 			<value>UTF-8</value>
 		</property>
-
 	</bean>
 
 

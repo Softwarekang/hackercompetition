@@ -7,31 +7,33 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    // System.out.println(basePath);
+%>
 <html>
 <head>
 <title>注册界面</title>
 </head>
 <body>
-
-<h1>欢迎进入注册网页</h1>
-<div id="registerInfo">
-    <%//out.write(request.getAttribute("registerInfo")==null?"":request.getAttribute("registerInfo").toString());%>
-</div>
-
-<div id="login_frame">
-    <p id="image_logo"></p>
-    <form method="post" action="/register">
-        <p><label class="label_input">用户名</label><input type="text" name="username" id="username" onblur="ajax()" class="text_field" /><span id="info"></span></p>
-        <p><label class="label_input">密码</label><input type="password" name="password" class="text_field"/></p>
-        <p><label class="label_input">确认密码</label><input type="password" name="password01" class="text_field"/></p>
-        <p><label class="label_input">邮箱</label><input type="text" name="email" class="text_field"/></p>
-        <div id="login_control">
-            <input type="submit" id="btn_login" value="确定注册 "/>
-        </div>
-    </form>
-</div>
+<div id="registerInfo">${registerInfo}</div>
+<div class="fause" id="ajaxInfo"></div>
+<form action="/register" method="post">
+    <div  class="insert">注册账号</div>
+    <table>
+        <tr><td><span>用户名</span></td><td><input type="text" name="userName" id="username" onblur="ajax()"/></td></tr>
+        <tr><td><span>密码</span></td><td><input type="password" name="userPassword" /></td></tr>
+        <tr><td><span>确认密码</span></td><td><input type="password" name="user_confirm_password" /></td></tr>
+        <tr><td>性别</td><td><input type="radio" id="male" name="user_sex" checked />男<input type="radio" id="female" name="user_sex" />女</td></tr>
+        <tr><td>邮箱</td><td><input type="text" name="email" /></td></tr>
+        <tr><td colspan="2"><input type="checkbox" checked/>我已看过并接受<a href="#">《用户协议》</a></td></tr>
+        <tr><td colspan="2"><input type="submit" name="submit" value="立即注册" /></td></tr>
+    </table>
+</form>
 </body>
-
+<link rel="stylesheet" href="<%=basePath%>/css/register.css">
 <script type="text/javascript">
     function ajax() {
       //  获得输入框的username值
@@ -46,9 +48,9 @@
         if((xmlHttp.status == 200) && (xmlHttp.readyState == 4)) {
           var info = xmlHttp.responseText;
           if(info == 'yes'){
-            document.getElementById('info').innerHTML="用户已经存在";
+            document.getElementById('ajaxInfo').innerHTML="用户已经存在";
           }else{
-            document.getElementById('info').innerHTML="可以注册此用户名";
+            document.getElementById('ajaxInfo').innerHTML="可以注册此用户名";
           }
         }
       };
