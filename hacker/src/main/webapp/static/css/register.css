@@ -1,0 +1,76 @@
+body{
+  margin:0;
+  padding:0;
+  color:white;
+  background-image:url("../../image/c.jpg")
+}
+.fause{
+  color:orangered;
+}
+#name{
+  color:rgb(81, 136, 190);
+}
+.insert{
+  background:LightSalmon;
+  font-size:35px;
+  padding:20px;
+  color:white;
+  text-align:center;
+}
+form{
+  background: rgb(240, 235, 225) ;
+  border:rgb(41, 191, 202) solid 1px;
+  color:rgb(81, 136, 190);
+  width:430px;
+  margin:150px auto;
+  font-size:15px;
+}
+table{
+  margin:10px auto;
+}
+a{
+  text-decoration:none;
+}
+input[type="button"]{
+  background:OrangeRed;
+  color:white;
+  font-size:15px;
+  font-weight:bold;
+  width:200px;
+  height:40px;
+}
+td:first-child{
+  text-align:right;
+  padding:0 5px;
+}
+td:only-child{
+  text-align:center;
+  font-size:12px;
+}
+span:before{
+  content:"* ";
+  color:rgb(255, 0, 0);
+}
+input[type="text"]:read-only{
+  border:#888484 solid 2px;
+  background:#888484;
+  font-weight:bold;
+}
+input[type="text"]:hover{
+  background:#EFD9AC;
+}
+#ajaxInfo{
+  color:red;
+  position:absolute;
+  top:250px;
+  left:555px;
+  font-size:14px;
+}
+
+#registerInfo{
+  color: #ffe94c;
+  position:absolute;
+  top:200px;
+  left:560px;
+  font-size:14px;
+}

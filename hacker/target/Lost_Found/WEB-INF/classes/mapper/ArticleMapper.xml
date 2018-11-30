@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.epi.dao.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.epi.bean.Article">
+    <id column="r_id" jdbcType="INTEGER" property="rId" />
+    <result column="r_author" jdbcType="VARCHAR" property="rAuthor" />
+    <result column="r_sort" jdbcType="VARCHAR" property="rSort" />
+    <result column="r_image" jdbcType="VARCHAR" property="rImage" />
+    <result column="r_date" jdbcType="VARCHAR" property="rDate" />
+    <result column="r_status" jdbcType="INTEGER" property="rStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.epi.bean.Article">
+    <result column="r_content" jdbcType="LONGVARCHAR" property="rContent" />
+  </resultMap>
+  <resultMap id="WordsBaseMap" type="com.epi.bean.Words">
+    <id column="lw_id" property="lw_id" jdbcType="INTEGER"/>
+    <result column="lw_name" property="lw_name" jdbcType="VARCHAR"/>
+    <result column="lw_date" property="lw_date" jdbcType="VARCHAR"/>
+    <result column="lw_content" property="lw_content" jdbcType="VARCHAR"/>
+    <result column="lw_for_name" property="lw_for_name" jdbcType="VARCHAR"/>
+    <result column="lw_for_article_id" property="lw_for_article_id" jdbcType="VARCHAR"/>
+  </resultMap>
+  <resultMap id="ReplyBaseMap" type="com.epi.bean.Reply">
+    <id column="lr_id" property="lr_id" jdbcType="INTEGER"/>
+    <result column="lr_name" property="lr_name" jdbcType="VARCHAR"/>
+    <result column="lr_date" property="lr_date" jdbcType="VARCHAR"/>
+    <result column="lr_content" property="lr_content" jdbcType="VARCHAR"/>
+    <result column="lr_for_name" property="lr_for_name" jdbcType="VARCHAR"/>
+    <result column="lr_for_words" property="lr_for_words" jdbcType="VARCHAR"/>
+    <result column="lr_for_article_id" property="lr_for_article_id" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    r_id, r_author, r_sort, r_image, r_date, r_status
+  </sql>
+  <sql id="Blob_Column_List">
+    r_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.epi.bean.ArticleExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.epi.bean.ArticleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where r_id = #{rId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where r_id = #{rId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epi.bean.ArticleExample">
+    delete from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epi.bean.Article">
+    insert into article (r_id, r_author, r_sort, 
+      r_image, r_date, r_status, 
+      r_content)
+    values (#{rId,jdbcType=INTEGER}, #{rAuthor,jdbcType=VARCHAR}, #{rSort,jdbcType=VARCHAR}, 
+      #{rImage,jdbcType=VARCHAR}, #{rDate,jdbcType=VARCHAR}, #{rStatus,jdbcType=INTEGER}, 
+      #{rContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.epi.bean.Article">
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        r_id,
+      </if>
+      <if test="rAuthor != null">
+        r_author,
+      </if>
+      <if test="rSort != null">
+        r_sort,
+      </if>
+      <if test="rImage != null">
+        r_image,
+      </if>
+      <if test="rDate != null">
+        r_date,
+      </if>
+      <if test="rStatus != null">
+        r_status,
+      </if>
+      <if test="rContent != null">
+        r_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="rAuthor != null">
+        #{rAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="rSort != null">
+        #{rSort,jdbcType=VARCHAR},
+      </if>
+      <if test="rImage != null">
+        #{rImage,jdbcType=VARCHAR},
+      </if>
+      <if test="rDate != null">
+        #{rDate,jdbcType=VARCHAR},
+      </if>
+      <if test="rStatus != null">
+        #{rStatus,jdbcType=INTEGER},
+      </if>
+      <if test="rContent != null">
+        #{rContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epi.bean.ArticleExample" resultType="java.lang.Long">
+    select count(*) from article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <!-- 保存留言信息 -->
+  <insert id="saveWords" parameterType="com.epi.bean.Words">
+        insert into words(
+          lw_name,
+          lw_date,
+          lw_content,
+          lw_for_name,
+          lw_for_article_id
+        )
+        values(
+          #{lw_name},
+          #{lw_date},
+          #{lw_content},
+          #{lw_for_name},
+          #{lw_for_article_id}
+        )
+    </insert>
+
+  <!-- 保存回复信息 -->
+  <insert id="saveReply" parameterType="com.epi.bean.Reply">
+        insert into reply(
+          lr_name,
+          lr_date,
+          lr_content,
+          lr_for_name,
+          lr_for_words,
+          lr_for_reply,
+          lr_for_article_id
+        )
+        values(
+          #{lr_name},
+          #{lr_date},
+          #{lr_content},
+          #{lr_for_name},
+          #{lr_for_words},
+          #{lr_for_reply},
+          #{lr_for_article_id}
+        )
+    </insert>
+
+  <!-- 查询所有留言信息 -->
+  <select id="findByWords" resultMap="WordsBaseMap">
+        select * from words
+    </select>
+
+  <!-- 查询所有回复信息 -->
+  <select id="findByReply" resultMap="ReplyBaseMap">
+        select * from reply
+  </select>
+
+
+</mapper>
