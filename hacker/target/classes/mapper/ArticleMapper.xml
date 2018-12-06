@@ -255,5 +255,14 @@
         select * from reply
   </select>
 
+  <select id="findAll" resultMap="BaseResultMap">
+        select * from article
+  </select>
 
+  <select id="searchAll" parameterType="String" resultMap="BaseResultMap">
+        select * from article where r_content LIKE CONCAT(CONCAT('%', #{text}), '%')
+  </select>
+  <select id="findBySort" parameterType="String" resultMap="BaseResultMap">
+        select * from article where r_sort =#{sort}
+  </select>
 </mapper>

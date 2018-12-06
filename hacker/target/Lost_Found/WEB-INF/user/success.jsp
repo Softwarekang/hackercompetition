@@ -15,6 +15,6 @@
     <h1>登录成功界面</h1>
     <h2>${loginIfo}成功进入主页面</h2>
 <%--<input type="button" onclick="window.location.href='article/upFile.action'" value="我要上传">--%>
-    <a href="/article/upFile.action">上传</a>
+    <a href="${pageContext.request.contextPath}/article/upFile.action">上传</a>
 </body>
 </html>

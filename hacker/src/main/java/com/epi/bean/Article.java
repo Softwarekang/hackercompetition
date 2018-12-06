@@ -79,4 +79,17 @@ public class Article {
     public void setrContent(String rContent) {
         this.rContent = rContent == null ? null : rContent.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "rId=" + rId +
+                ", rAuthor='" + rAuthor + '\'' +
+                ", rSort='" + rSort + '\'' +
+                ", rImage='" + rImage + '\'' +
+                ", rDate='" + rDate + '\'' +
+                ", rStatus=" + rStatus +
+                ", rContent='" + rContent + '\'' +
+                '}';
+    }
 }

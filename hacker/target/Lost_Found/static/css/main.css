@@ -1,0 +1,60 @@
+body{margin: 0 auto;}
+.top{margin:0 auto;width: 80%;height: 200px;/*background: rgb(254,67,101)*/}
+.middle{margin: 30px auto;width: 80%;height: 100px;float: right;}
+.search{width:561px;height: 38px;float: left;color:rgb(209,209,209);}
+.middle-pic{float: left;height: 59px;width: 163px;margin-left: 20px;padding-left: 17;}
+.searchfun{margin-right: 450px;margin-right: 10px;}
+.search-img{float: right; padding-left: 10px;}
+.container{margin: 10px auto;width: 80%;height: 1000px;}
+.left{margin-left:70px;float: left;width: 20%;height: 1000px;font-size: 20px;padding-top: 0px;background-color: rgb(209,209,209);}
+input{margin-right: 15px;}
+.right{ width:68%;height: 1000px;float: right;margin-left: -20px;}
+.center_img{clear: both;float: top;width: 100%}
+.informtion{/*border:1px solid black;*/width:80%;height: 200px;margin: 0 auto;margin-top: 35px;}
+
+.img{width: 20%;height: 90%;border: 1px solid ;float: left;margin-top: 5px;margin-right:20px;}
+.text{width:72%;height: 60%;border: 1px solid black ;float: right;margin-right: 5px;margin-top:5px;}
+.center_btn{float: right;margin-top: 30px;margin-right: 30px;}
+.line{width:0;height:100%;border-right:black 1px dashed;float: left;margin-right: 10px;}/*#000000表示白色，边框宽度为一个像素，边框线型为虚线*/
+.but1{position: relative;left:2%;top:150px;background-color: #4CAF50; /*Green */border: none;color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;}
+.but2{position: relative;left:5%;top: 150px;background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;}
+.but3{position: relative;left:8%;top: 150px;background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;}
+.but4{position: relative;left:11%;top: 150px;background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;}
+.logo{height: 150px;width: 50%;float: left;margin-top: 30px;margin-left: 100px;}
+.nav_item{margin: 60px auto;}
+.all p{color:#fff;background-color: #4CAF50;text-decoration: none;display: block;text-align: center;height:80px;line-height: 80px;font-size: 22px;width: 100%;margin-top: 0px;padding-top: 0px;}
+.classfy{/*background: green;*/text-align: center;text-decoration: none;margin-top: 0px;padding-top: 0px;padding-left: 50px;font-size: 15px;}
+.list{background-color:  rgb(245,245,245);margin-bottom: 50px;}
+.welcomeWord{
+    color: #1313ff;
+    position:absolute;
+    top:15px;
+    left:1400px;
+    font-size:14px;
+}

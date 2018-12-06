@@ -20,17 +20,51 @@
         String nowDate = sdf.format(date);
     %>
 </head>
-<body>
+<style type="text/css">
+    .back{
+        color:red;
+        position:absolute;
+        top:20px;
+        left:1400px;
+        font-size:14px;
+    }
+</style>
+<body bgcolor="#BFEFFF">
+<div class="back"><input type="button" value="点此返回主页面" onclick="window.location.href='/article/listAll.action?id=${userId}'" ></div>
+<table bgcolor="#7fffd4">
+    <tr>
+        <td>作者：</td>
+        <td>${article.rAuthor}</td>
+    </tr>
+    <tr>
+        <td>分类：</td>
+        <td>${article.rSort}</td>
+    </tr>
+    <tr>
+        <td>日期：</td>
+        <td>${article.rDate}</td>
+    </tr>
+    <tr>
+        <td>描述：</td>
+        <td>${article.rContent}</td>
+    </tr>
+    <tr>
 
+    <img src="${article.rImage}" width="180px" height="182px">
+    </tr>
+</table>
+
+<script src="<%=basePath%>/static/js/jquery-3.3.1.min.js"></script>
 <div style="margin:0 4% 0 4%;">
     <br/>
     <!-- 留言的表单 -->
     <form class="layui-form" action="<%=basePath%>/article/saveWords.action" method="post">
-        <input name="lw_name" value="${sessionScope.name}" hidden="hidden"/>
+        <input name="lw_name" value="${sessionScope.username}" hidden="hidden"/>
         <input name="lw_date" value="<%=nowDate%>" hidden="hidden"/>
-        <input name="lw_for_article_id" value="${article.r_id}" hidden="hidden"/>
+        <input name="lw_for_name" value="${article.rAuthor}" hidden="hidden"/>
+        <input name="lw_for_article_id" value="${article.rId}" hidden="hidden"/>
         <div class="layui-input-block" style="margin-left: 0;">
-            <textarea id="lw_content" name="lw_content" placeholder="请输入你的留言" class="layui-textarea" style="height: 150px;"></textarea>
+            <textarea id="lw_content" name="lw_content" placeholder="请输入你的留言" class="layui-textarea" rows="3" cols="50"></textarea>
         </div>
         <br/>
         <div class="layui-input-block" style="text-align: left;margin-left: 0;">
@@ -42,9 +76,9 @@
     <div>
         <ul>
             <!-- 先遍历留言信息（一条留言信息，下面的全是回复信息） -->
-            <c:forEach items="${requestScope.lw_list}" var="words">
+            <c:forEach items="${wordsList}" var="words">
                 <!-- 如果留言信息是在本文章下的才显示 -->
-                <c:if test="${words.lw_for_article_id eq article.r_id}">
+                <c:if test="${words.lw_for_article_id eq article.rId}">
                     <li style="border-top: 1px dotted #01AAED">
                         <br/>
                         <div style="text-align: left;color:#444">
@@ -65,26 +99,26 @@
                             <!-- 回复表单默认隐藏 -->
                             <div class="replycontainer layui-hide" style="margin-left: 61px;">
                                 <form action="<%=basePath%>/article/saveReply.action" method="post" class="layui-form">
-                                    <input name="lr_for_article_id" id="lr_for_article_id" value="${article.r_id}" hidden="hidden"/>
-                                    <input name="lr_name" id="lr_name" value="${sessionScope.name}" hidden="hidden"/>
+                                    <input name="lr_for_article_id" id="lr_for_article_id" value="${article.rId}" hidden="hidden"/>
+                                    <input name="lr_name" id="lr_name" value="${sessionScope.username}" hidden="hidden"/>
                                     <input name="lr_date" id="lr_date" value="<%=nowDate%>" hidden="hidden"/>
                                     <input name="lr_for_name" id="lr_for_name" value="${words.lw_name}" hidden="hidden"/>
                                     <input name="lr_for_words" id="lr_for_words" value="${words.lw_id}" hidden="hidden"/>
                                     <input name="lr_for_reply" id="lr_for_reply" value="${reply.lr_id}" hidden="hidden"/>
                                     <div class="layui-form-item">
-                                        <textarea name="lr_content" id="lr_content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
+                                        <textarea name="lr_content" id="lr_content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" rows="3" cols="50""></textarea>
                                     </div>
                                     <div class="layui-form-item">
-                                        <button id="replyBtn" class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                                        <input type="submit" class="layui-btn" value="回复">
                                     </div>
                                 </form>
                             </div>
                         </div>
 
                         <!-- 以下是回复信息 -->
-                        <c:forEach items="${requestScope.findByWords}" var="reply">
+                        <c:forEach items="${replyList}" var="reply">
                             <!-- 每次遍历出来的留言下存在回复信息才展示（本条回复信息是本条留言下的就显示在当前留言下） -->
-                            <c:if test="${reply.lr_for_article_id eq article.r_id && reply.lr_for_words eq words.lw_id}">
+                            <c:if test="${reply.lr_for_article_id eq article.rId && reply.lr_for_words eq words.lw_id}">
                                 <div style="text-align: left;margin-left:61px;color: #444">
                                     <div>
                                         <span style="color:#5FB878">${reply.lr_name}&nbsp;&nbsp;</span>
@@ -104,19 +138,18 @@
                                     <!-- 回复表单默认隐藏 -->
                                     <div class="replycontainer layui-hide" style="margin-left: 61px;">
                                         <form action="<%=basePath%>/article/saveReply.action" method="post" class="layui-form">
-                                            <input name="lr_for_article_id" id="lr_for_article_id" value="${article.r_id}" hidden="hidden"/>
-                                            <input name="lr_name" id="lr_name" value="${sessionScope.name}" hidden="hidden"/>
+                                            <input name="lr_for_article_id" id="lr_for_article_id" value="${article.rId}" hidden="hidden"/>
+                                            <input name="lr_name" id="lr_name" value="${sessionScope.username}" hidden="hidden"/>
                                             <input name="lr_date" id="lr_date" value="<%=nowDate%>" hidden="hidden"/>
-                                            <input name="lr_for_name" id="lr_for_name" value="${reply.lr_name}" hidden="hidden"/>
+                                            <input name="lr_for_name" id="lr_for_name" value="${words.lw_name}" hidden="hidden"/>
                                             <input name="lr_for_words" id="lr_for_words" value="${words.lw_id}" hidden="hidden"/>
                                             <input name="lr_for_reply" id="lr_for_reply" value="${reply.lr_id}" hidden="hidden"/>
                                             <div class="layui-form-item">
-                                                    <textarea name="lr_content" id="lr_content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
-                                                      @${words.lw_name}:&nbsp;&nbsp;
-                                                  </textarea>
+                                                <textarea name="lr_content" id="lr_content" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" rows="3" cols="50"></textarea>
                                             </div>
                                             <div class="layui-form-item">
-                                                <button id="replyBtn" class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                                                    <%--<button id="replyBtn" class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>--%>
+                                                <input type="submit" class="layui-btn" value="回复">
                                             </div>
                                         </form>
                                     </div>
@@ -129,58 +162,3 @@
         </ul>
     </div>
 </div>
-
-<script type="text/javascript">
-    function btnReplyClick(elem) {
-        var $ = layui.jquery;
-        if($(this)){
-        }else if(!$(this)){
-            $(elem).parent('p').parent('.comment-parent').siblings('.replycontainer').toggleClass('layui-show');
-        }
-        $(elem).parent('p').parent('.comment-parent').siblings('.replycontainer').toggleClass('layui-hide');
-        if ($(elem).text() == '回复') {
-            $(elem).text('收起')
-        } else {
-            $(elem).text('回复')
-        }
-    }
-    $("#replyBtn").click(function(){
-        var lr_for_article_id = $("#lr_for_article_id").val();
-        var lr_name = $("#lr_name").val();
-        var lr_date = $("#lr_date").val();
-        var lr_for_name = $("#lr_for_name").val();
-        var lr_content = $("#lr_content").val();
-        var lr_for_words = $("#lr_for_words").val();
-        $.ajax({
-            url: '<%=basePath%>/article/saveReply.do',
-            type: 'POST',
-            data: [{
-                lr_for_article_id: lr_for_article_id,
-                lr_name: lr_name,
-                lr_date: lr_date,
-                lr_for_name: lr_for_name,
-                lr_content: lr_content,
-                lr_for_words: lr_for_words
-            }],
-            success: function(data){
-                layer.open({
-                    title: '提示信息',
-                    content: '留言成功',
-                    btn: ['确定'],
-                    btn1: function(index){
-                        $("body").html(data);
-                    }
-                });
-            },
-            error: function(){
-                layer.open({
-                    title: '提示信息',
-                    content: '出现未知错误'
-                });
-            }
-        });
-    });
-</script>
-
-</body>
-</html>

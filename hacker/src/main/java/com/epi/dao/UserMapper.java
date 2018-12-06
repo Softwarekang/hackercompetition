@@ -39,4 +39,6 @@ public interface UserMapper {
     void insertProject(Article good);
     // 照片的回显 先按照name查询
     Article getImageInfo(String username);
+
+    User selectByUserId(Integer id);
 }

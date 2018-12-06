@@ -19,4 +19,9 @@ public interface ArticleService {
 
     Article findById(int r_id);
 
+    List<Article> findAll();
+
+    List<Article> searchAll(String text);
+
+    List<Article> findBySort(String r_sort);
 }

@@ -31,4 +31,9 @@ public interface ArticleMapper {
 
     List<Reply> findByReply();
 
+    List<Article> findAll();
+
+    List<Article> searchAll(String text);
+
+    List<Article> findBySort(String sort);
 }

@@ -2,11 +2,26 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/static/images/c.jpg" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/static/js/jquery-1.11.3.min.js" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/static/js/jquery-3.3.1.min.js" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/image/111.jpg" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/image/c.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/advice/advice.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/advice/bgimage.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/login/centrallogo.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/login/logo.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/@xupt.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/background.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/card.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/key.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/logo.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/lost_find.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/others.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/phone.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/main/serach.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/register/c.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/upFile/background.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/upFile/logo.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/upFile/upImage.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/userInfo/bgimage.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/userInfo/head.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/image/userInfo/word.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/static/js/jquery-1.11.3.min.js" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/static/js/jquery-3.3.1.min.js" charset="GBK" />
     <file url="PROJECT" charset="GBK" />

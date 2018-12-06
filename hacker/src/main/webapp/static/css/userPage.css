@@ -1,0 +1,20 @@
+body{
+    margin: 0;
+    padding: 0;
+    color: aliceblue;
+    background-image:url(../../image/userInfo/bgimage.png)
+}
+.header{
+    width: 1200px;
+    height: 150px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 20px;
+    line-height: 50px;
+}
+.container{
+    width: 1200px;
+    height: 100px;
+    margin: 0 auto;
+    text-align: center;
+}

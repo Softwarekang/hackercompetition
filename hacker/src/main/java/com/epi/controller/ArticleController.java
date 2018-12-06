@@ -2,12 +2,15 @@ package com.epi.controller;
 
 import com.epi.bean.Article;
 import com.epi.bean.Reply;
+import com.epi.bean.User;
 import com.epi.bean.Words;
 import com.epi.service.ArticleService;
+import com.epi.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +31,42 @@ import java.util.List;
 public class ArticleController {
     @Autowired
     ArticleService articleService;
+    @Autowired
+    UserService userService;
+    //搜索功能
+    @RequestMapping("/search")
+    public String search(@RequestParam String rContent,@RequestParam String id, Model model){
+        List<Article> list2=articleService.searchAll(rContent);
+        model.addAttribute("userId",id);
+        model.addAttribute("articleList",list2);
+        return "article/listAll";
+    }
+    //分类
+    @RequestMapping("/sort")
+    public String findBySort(@RequestParam String r_sort,@RequestParam String id, Model model){
+        if(r_sort==null || r_sort.isEmpty()){
+            r_sort=r_sort+"";
+        }
+        User user = userService.selectByUserId(Integer.valueOf(id));
+        System.out.print(id);
+        model.addAttribute("userId",user.getUserId());
+        List<Article> listSort=articleService.findBySort(r_sort);
+
+        model.addAttribute("articleList",listSort);
+        return "article/listAll";
+    }
+
+    @RequestMapping("/listAll")
+    public String listAll(HttpServletRequest request,Model model){
+        String id = request.getParameter("id");
+        System.out.print(id);
+        User user = userService.selectByUserId(Integer.valueOf(id));
+        List<Article> list=articleService.findAll();
+        model.addAttribute("articleList",list);
+        model.addAttribute("userId",user.getUserId());
+        return "article/listAll";
+
+    }
 
     /**
      * 展示详情页面
@@ -40,25 +79,24 @@ public class ArticleController {
     }
     // 长传信息
     @RequestMapping("/upFile")
-    public String upFile(){
+    public String upFile(HttpServletRequest request, Model mv){
+        String id = request.getParameter("id");
+        User user =  userService.selectByUserId(Integer.valueOf(id));
+        mv.addAttribute("user",user);
         return "article/upFile";
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public String upImage(HttpServletRequest request, @RequestParam("author") String author, @RequestParam("description") String description,
-                          @RequestParam("type") String type, @RequestParam("file") MultipartFile file) throws Exception{
-        System.out.println("555");
-        System.out.println(description+type);
+    public String upImage(HttpServletRequest request,@RequestParam("author") String author, @RequestParam("description") String description,
+                          @RequestParam("type") String type, @RequestParam("file") MultipartFile file,Model mv) throws Exception{
         // 获得上传文件名
         String fileName = file.getOriginalFilename();
-        System.out.println(fileName);
         // 规定时间格式
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // 获得现在的时间（字符串)
         String time = df.format(new Date());
         // 获得现在时间的格式(date）
         Date date = df.parse(time);
-        System.out.println(time);
         // 文件的后缀名
         String ext = FilenameUtils.getExtension(fileName);
         // 获得上传文件的输入流
@@ -74,8 +112,8 @@ public class ArticleController {
         // 图片存入磁盘的路径
         String realUploadPath=request.getServletContext().getRealPath("/");
         System.out.println(realUploadPath);
-        String inPath = "/images/"+imageName+"."+ext;
-        String inPath1 = "C:\\Users\\安康\\IdeaProjects\\hacker\\src\\main\\webapp\\image\\"+imageName+"."+ext;
+        String inPath = "/upload/"+imageName+"."+ext;
+        String inPath1 = "C:\\Users\\安康\\IdeaProjects\\hacker01（最终版）\\src\\main\\webapp\\upload"+imageName+"."+ext;
         // 文件路径的输出流
         OutputStream fileOutputStream = new FileOutputStream(new File(inPath1));
         // 写入信息
@@ -86,6 +124,10 @@ public class ArticleController {
         // 存入数据库
         Article article=new Article(author,type,inPath,time,description);
         articleService.insertProject(article);
+        // 将user放入
+        String id = request.getParameter("id");
+        System.out.print(id);
+        mv.addAttribute("userId",id);
         return "article/upFileSuccess";
     }
 
@@ -94,18 +136,7 @@ public class ArticleController {
     public String toSuccess(){
         return "article/success";
     }
-    // 照片回显
-    @RequestMapping("/getImages")
-    public String toDownImage(){
-        return "article/getImages";
-    }
-    @RequestMapping("/getInformation")
-    public String downImage(HttpServletRequest request) throws Exception{
-        String inPath ="http://localhost:9995/images/2018-11-27153553.png";
-        System.out.println(inPath);
-        request.setAttribute("imageUrl",inPath);
-        return "article/getImages";
-    }
+
     /**
      * 保存留言信息
      */
@@ -114,12 +145,22 @@ public class ArticleController {
         if(words != null){
             String r_id = words.getLw_for_article_id();
             articleService.saveWords(words);
-            return "article/toArticleView?r_id="+r_id;
+            return "redirect:/article/show.action?rId="+r_id;
         }else{
             return null;
         }
     }
-
+    @RequestMapping("/show")
+    public String show(@RequestParam Integer rId,@RequestParam String id, Model model){
+        Article article=articleService.findById(rId);
+        List<Words> wordsList=articleService.findByWords();
+        List<Reply> replyList=articleService.findByReply();
+        model.addAttribute("article",article);
+        model.addAttribute("wordsList",wordsList);
+        model.addAttribute("replyList",replyList);
+        model.addAttribute("userId",id);
+        return "article/show";
+    }
     /**
      * 保存回复信息
      */
@@ -128,38 +169,9 @@ public class ArticleController {
         if(reply != null){
             articleService.saveReply(reply);
             String r_id = reply.getLr_for_article_id();
-            return "article/toArticleView?r_id="+r_id;
+            return "redirect:/article/show.action?rId="+r_id;
         }else{
             return null;
         }
     }
-
-    /**
-     * 跳转到查看文章内容页面
-     */
-    //声明用于存放留言回复信息的List集合
-    private List<Words> lw_list;
-    private List<Reply> lr_list;
-    @RequestMapping(value="/toArticleView")
-    public String toArticleView(@RequestParam int r_id, Model model){
-        //封装留言信息
-        lw_list = articleService.findByWords();
-        model.addAttribute("lw_list",lw_list);
-
-        //封装回复信息
-        lr_list = articleService.findByReply();
-        model.addAttribute("lr_list",lr_list);
-
-        //查询文章信息
-        Article article = articleService.findById(r_id);
-        System.out.println("查询到当前文章的ID值："+article.getrId());
-        if (article != null) {
-            model.addAttribute("article", article);
-            return "article/show";
-        } else {
-            return null;
-        }
-    }
-
-
 }

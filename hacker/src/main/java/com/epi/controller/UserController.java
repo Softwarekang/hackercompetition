@@ -1,30 +1,38 @@
 package com.epi.controller;
 
+import com.epi.bean.Article;
 import com.epi.bean.User;
+import com.epi.service.ArticleService;
 import com.epi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RequestMapping("/user")
 @Controller
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    ArticleService articleService;
 
     @RequestMapping(value="/login",method= RequestMethod.GET)
     public String login(){
         return "user/login";
     }
     @RequestMapping(value="/login",method= RequestMethod.POST)
-    public String login(HttpServletRequest request, HttpServletResponse response, ModelMap mv){
+    public String login(HttpServletRequest request, HttpServletResponse response, Model mv, HttpSession session){
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
         if(userName.equals("")){
@@ -35,10 +43,19 @@ public class UserController {
             return "user/login";
         }else{
             User user = userService.selectByUserName(userName);
-            System.out.println(userName);
             if(user != null && (user.getUserPassword().equals(password))){
-                mv.addAttribute("loginIfo",userName);
-                return "user/success";
+                // 将物品列表全部获取
+                List<Article> list=articleService.findAll();
+                if(!(list == null)) {
+                    mv.addAttribute("articleList", list);
+                }
+                // 获取user的id值进行
+                User user1 = userService.selectByUserName(userName);
+                session.setAttribute("username",userName);
+                mv.addAttribute("userId",user1.getUserId());
+                request.getSession().setAttribute("username",userName);
+                mv.addAttribute("loginInfo",userName);
+                return "article/listAll";
             }else {
                 mv.addAttribute("loginInfo","用户名或密码错误");
                 return "user/login";
@@ -48,12 +65,12 @@ public class UserController {
 
     }
 
-    @RequestMapping(value="/regis",method= RequestMethod.GET)
+    @RequestMapping(value="/regist",method= RequestMethod.GET)
     public String regist(){
         return "user/regist";
     }
     @RequestMapping(value="/register",method= RequestMethod.POST)
-    public String register(HttpServletRequest request, HttpServletResponse response, ModelMap mv) throws Exception{
+    public String regist(HttpServletRequest request, HttpServletResponse response, ModelMap mv) throws Exception{
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("userPassword");
         String confirmPassword = request.getParameter("user_confirm_password");
@@ -97,7 +114,6 @@ public class UserController {
         response.setCharacterEncoding("UTF-8");
         String userName = request.getParameter("username");
         User user = userService.selectByUserName(userName);
-        System.out.println(userName);
         if(user == null){
             response.getWriter().write("false");
         }else {
@@ -107,6 +123,37 @@ public class UserController {
     }
 
 
+    // 个人主页
+    @RequestMapping("/toUserMainPage")
+    public String userMainPage(HttpServletRequest request, Model mv){
+        // 再user表中查找到user的信息发送到个人主页的页面上
+        String id  = request.getParameter("id");
+        User user = userService.selectByUserId(Integer.valueOf(id));
+        mv.addAttribute("user",user);
+        return "user/userPage";
+    }
+
+    // 反馈和建议
+    @RequestMapping("/toFeedBack")
+    public String feedBack(HttpServletRequest request, Model mv){
+        String userName = request.getParameter("id");
+        // 在新建的反馈表中插入信息即可
+        String id = request.getParameter("id");
+        User user = userService.selectByUserId(Integer.valueOf(id));
+        mv.addAttribute("user",user);
+        // 返回到反馈成功界面
+        return "user/advice";
+    }
+
+    // 处理反馈意见
+    @RequestMapping("/postFeedback")
+    public String getFeedback(HttpServletRequest request, Model mv){
+        String id = request.getParameter("id");
+        String advice  = request.getParameter("advice");
+        mv.addAttribute("userId",id);
+        // 新键一个表把反馈村进入
+        return "user/adviceSuccess";
+    }
 
 
 

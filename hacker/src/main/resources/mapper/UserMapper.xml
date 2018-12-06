@@ -9,6 +9,9 @@
     <result column="user_time" jdbcType="DATE" property="userTime" />
   </resultMap>
 
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultType="com.epi.bean.User">
+    select * from user where user_id = #{id}
+  </select>
 
   <select id="insertImageInfo" parameterType="com.epi.bean.Image1">
     insert into image1 (imageTime, image) values (#{imageTime},#{image})

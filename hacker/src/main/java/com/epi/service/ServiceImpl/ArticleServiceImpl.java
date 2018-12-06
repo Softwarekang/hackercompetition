@@ -44,5 +44,19 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.selectByPrimaryKey(r_id);
     }
 
+    @Override
+    public List<Article> findAll() {
+        return articleMapper.findAll();
+    }
+
+    @Override
+    public List<Article> searchAll(String text) {
+        return articleMapper.searchAll(text);
+    }
+
+    @Override
+    public List<Article> findBySort(String sort) {
+        return articleMapper.findBySort(sort);
+    }
 
 }

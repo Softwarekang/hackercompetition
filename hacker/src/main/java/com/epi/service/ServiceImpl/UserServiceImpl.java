@@ -20,4 +20,9 @@ public class UserServiceImpl implements UserService {
     public User selectByUserName(String userName) {
         return userMapper.selectByUserName(userName);
     }
+
+    @Override
+    public User selectByUserId(Integer id) {
+        return userMapper.selectByUserId(id);
+    }
 }

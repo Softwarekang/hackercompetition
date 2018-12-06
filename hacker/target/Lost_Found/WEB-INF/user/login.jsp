@@ -20,15 +20,15 @@
 <body>
 <div id="loginInfo">${loginInfo}</div>
 <div class ="header">
-    <div class="pic1"><img src="image/111.jpg" height="150px" width="1000px"></div>
+    <div class="pic1"><img src="<%=basePath%>/image/login/logo.jpg" height="150px" width="1000px"></div>
 </div>
 <div  class ="container">
-    <div class="left"><img src="upload/13周任务.png"></div>
+    <div class="left"><img src="<%=basePath%>/image/login/centrallogo.jpg"></div>
     <form class="right"id ="register" method="post"  action="${pageContext.request.contextPath}/user/login.action">
         用户名：<input id="user"name="username" ><br><br>&nbsp;&nbsp;
         密码：<input name="password" type="password" id="password"><br><br>
-        <input class="btn1" type="submit" value="登录" ><br>
-        <input class="btn2" type="button" value="注册" onclick="window.location.href='/user/regis.action'" >
+        <input class="btn1" type="submit" value="登录" >
+        <input class="btn2" type="button" value="注册" onclick="window.location.href='/user/regist.action'" >
     </form>
 </div>
 <div class="footer">
