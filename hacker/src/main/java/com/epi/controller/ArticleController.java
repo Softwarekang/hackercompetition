@@ -113,7 +113,8 @@ public class ArticleController {
         String realUploadPath=request.getServletContext().getRealPath("/");
         System.out.println(realUploadPath);
         String inPath = "/upload/"+imageName+"."+ext;
-        String inPath1 = "C:\\Users\\安康\\IdeaProjects\\hacker01（最终版）\\src\\main\\webapp\\upload"+imageName+"."+ext;
+        String inPath1 = "C:\\Users\\安康\\IdeaProjects\\hacker\\src\\main\\webapp"+inPath;
+        System.out.print(inPath1);
         // 文件路径的输出流
         OutputStream fileOutputStream = new FileOutputStream(new File(inPath1));
         // 写入信息
@@ -141,11 +142,12 @@ public class ArticleController {
      * 保存留言信息
      */
     @RequestMapping(value="/saveWords")
-    public String saveWords(Words words){
+    public String saveWords(Words words, @RequestParam String id){
+        System.out.println(id);
         if(words != null){
             String r_id = words.getLw_for_article_id();
             articleService.saveWords(words);
-            return "redirect:/article/show.action?rId="+r_id;
+            return "redirect:/article/show.action?rId="+r_id+"&id="+id;
         }else{
             return null;
         }
@@ -165,11 +167,12 @@ public class ArticleController {
      * 保存回复信息
      */
     @RequestMapping(value="/saveReply")
-    public String saveReply(Reply reply){
+    public String saveReply(Reply reply, @RequestParam String id){
+        System.out.println(id);
         if(reply != null){
             articleService.saveReply(reply);
             String r_id = reply.getLr_for_article_id();
-            return "redirect:/article/show.action?rId="+r_id;
+            return "redirect:/article/show.action?rId="+r_id+"&id="+id;
         }else{
             return null;
         }

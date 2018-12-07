@@ -54,14 +54,17 @@
                 <div class="img">
                     <img src="<%=basePath%>${article.rImage}" width="140px" height="182px">
                 </div>
+
                 <div class="text">
                     &nbsp;&nbsp;&nbsp;${article.rContent}
                 </div>
                     <%--这里注意传id--%>
                 <div class="center_btn">
+                    <div class="time"><span class="timeout"> 发布时间：${article.rDate}</span></div>
+                    <div class="person"><span class="personer">&nbsp;&nbsp; 发布人：${article.rAuthor}</span></div>&nbsp;&nbsp;
                     <a href="/article/show.action?rId=${article.rId}&id=${userId}" class="butn1">查看详情
-                    </a>&nbsp;&nbsp;
-                    <a href="#" class="butn2">回复</a>
+                    </a>
+                    <a href="#" class="butn2"></a>
                 </div>
             </div>
         </c:forEach>

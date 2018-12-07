@@ -58,7 +58,7 @@
 <div style="margin:0 4% 0 4%;">
     <br/>
     <!-- 留言的表单 -->
-    <form class="layui-form" action="<%=basePath%>/article/saveWords.action" method="post">
+    <form class="layui-form" action="<%=basePath%>/article/saveWords.action?id=${userId}" method="post">
         <input name="lw_name" value="${sessionScope.username}" hidden="hidden"/>
         <input name="lw_date" value="<%=nowDate%>" hidden="hidden"/>
         <input name="lw_for_name" value="${article.rAuthor}" hidden="hidden"/>
@@ -98,7 +98,7 @@
                             </div>
                             <!-- 回复表单默认隐藏 -->
                             <div class="replycontainer layui-hide" style="margin-left: 61px;">
-                                <form action="<%=basePath%>/article/saveReply.action" method="post" class="layui-form">
+                                <form action="<%=basePath%>/article/saveReply.action?id=${userId}" method="post" class="layui-form">
                                     <input name="lr_for_article_id" id="lr_for_article_id" value="${article.rId}" hidden="hidden"/>
                                     <input name="lr_name" id="lr_name" value="${sessionScope.username}" hidden="hidden"/>
                                     <input name="lr_date" id="lr_date" value="<%=nowDate%>" hidden="hidden"/>
@@ -137,7 +137,7 @@
                                     </div>
                                     <!-- 回复表单默认隐藏 -->
                                     <div class="replycontainer layui-hide" style="margin-left: 61px;">
-                                        <form action="<%=basePath%>/article/saveReply.action" method="post" class="layui-form">
+                                        <form action="<%=basePath%>/article/saveReply.action?id=${userId}" method="post" class="layui-form">
                                             <input name="lr_for_article_id" id="lr_for_article_id" value="${article.rId}" hidden="hidden"/>
                                             <input name="lr_name" id="lr_name" value="${sessionScope.username}" hidden="hidden"/>
                                             <input name="lr_date" id="lr_date" value="<%=nowDate%>" hidden="hidden"/>
